@@ -1,0 +1,18 @@
+exports.main = async (event, callback) => {
+  
+  const becameMQL = event.inputFields['hs_lifecyclestage_marketingqualifiedlead_date'];
+  const lastContactedDate = event.inputFields['notes_last_contacted'];
+
+  const timeToContact =  lastContactedDate - becameMQL
+	const formattedTimeToContact = new Date(timeToContact).toISOString().slice(11, 19)
+  
+  const hours = Math.floor((timeToContact / 1000 / 60 / 60) % 24);
+
+  callback({
+    outputFields: {
+      formattedTimeToContact: formattedTimeToContact,
+      hoursToContact: hours,
+      timeToContact: timeToContact
+    }
+  });
+}
