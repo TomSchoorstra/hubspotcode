@@ -1,13 +1,17 @@
 exports.main = async (event, callback) => {
   
+  // Pulls in 2 date time stamps. 1 for becoming a marketing qualified lead & 1 for the last contacted date
   const becameMQL = event.inputFields['hs_lifecyclestage_marketingqualifiedlead_date'];
   const lastContactedDate = event.inputFields['notes_last_contacted'];
 
+  // Calculates the time between both values in milliseconds
   const timeToContact =  lastContactedDate - becameMQL
   const formattedTimeToContact = new Date(timeToContact).toISOString().slice(11, 19)
   
+  // Converts the difference in milliseconds to hours
   const hours = Math.floor((timeToContact / 1000 / 60 / 60) % 24);
 
+  // Callback to use in next step in workflow (copy over value to a custom property)
   callback({
     outputFields: {
       formattedTimeToContact: formattedTimeToContact,
